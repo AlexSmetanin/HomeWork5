@@ -84,7 +84,7 @@ public abstract class BaseTest {
                 capabilities = DesiredCapabilities.internetExplorer();
                 break;
             case "android":
-                capabilities = DesiredCapabilities.chrome();
+                capabilities = DesiredCapabilities.android();
                 break;
             case "chrome":
             default:
