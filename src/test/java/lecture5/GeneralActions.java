@@ -30,7 +30,7 @@ public class GeneralActions {
     private By desktopUserInfo = By.id("_desktop_user_info");
 
     private By allProductsLink = By.xpath("//div//a[@class='all-product-link pull-xs-left pull-md-right h4']");
-    private By thumbnailContainer = By.xpath("//div//h1[@class='h3 product-title']");
+    private By thumbnailContainer = By.xpath("//div//h1[@class='h3 product-title']/a");
 
     private String currentProductURL;
     private By openedProductURL = By.xpath("//div//ol/li/a");
@@ -173,7 +173,11 @@ public class GeneralActions {
         CustomReporter.logAction("Place new order and validate order summary.");
         wait.until(ExpectedConditions.presenceOfElementLocated(saveButton));
 
-        Assert.assertTrue(driver.findElement(confirmMessage).getText().contains("ВАШ ЗАКАЗ ПОДТВЕРЖДЁН"), "Confirm messages was not shown.");
+        Boolean confirmMessageIsShown;
+        if (driver.findElement(confirmMessage).getText().contains("ВАШ ЗАКАЗ ПОДТВЕРЖДЁН")) confirmMessageIsShown = true;
+            else if (driver.findElement(confirmMessage).getText().contains("ВАШЕ ЗАМОВЛЕННЯ ПІДТВЕРДЖЕНО")) confirmMessageIsShown = true;
+                else confirmMessageIsShown = false;
+        Assert.assertTrue(confirmMessageIsShown, "Confirm messages was not shown.");
 
         List<WebElement> rows = driver.findElements(orderLineRow);
         Assert.assertEquals(rows.size(), 1 , "There are more than one product in the order.");

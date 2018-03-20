@@ -7,6 +7,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.ie.InternetExplorerOptions;
+import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.testng.Reporter;
@@ -50,26 +51,10 @@ public abstract class BaseTest {
                 System.setProperty(
                         "webdriver.ie.driver",
                         getResource("/IEDriverServer.exe"));
-                InternetExplorerOptions ieOptions = new InternetExplorerOptions()
-                        .destructivelyEnsureCleanSession();
+                InternetExplorerOptions ieOptions = new InternetExplorerOptions().destructivelyEnsureCleanSession();
                 ieOptions.setCapability(InternetExplorerDriver.NATIVE_EVENTS, false);
                 return new InternetExplorerDriver(ieOptions);
-            case "headless-chrome":
-                System.setProperty(
-                        "webdriver.chrome.driver",
-                        getResource("/chromedriver.exe"));
-                ChromeOptions options = new ChromeOptions();
-                options.addArguments("headless");
-                options.addArguments("window-size=800x600");
-                return new ChromeDriver(options);
-            case "remote-chrome":
-                ChromeOptions optionsRemote = new ChromeOptions();
-                try {
-                    return new RemoteWebDriver(new URL("http://localhost:4444/wd/hub"),optionsRemote);
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                }
-            case "mobile":
+            case "android":
                 System.setProperty(
                         "webdriver.chrome.driver",
                         getResource("/chromedriver.exe"));
@@ -88,6 +73,27 @@ public abstract class BaseTest {
         }
     }
 
+    private RemoteWebDriver getRemoteDriver(String gridUrl, String browser) throws MalformedURLException {
+        DesiredCapabilities capabilities;
+        switch (browser) {
+            case "firefox":
+                capabilities = DesiredCapabilities.firefox();
+                break;
+            case "ie":
+            case "internet explorer":
+                capabilities = DesiredCapabilities.internetExplorer();
+                break;
+            case "android":
+                capabilities = DesiredCapabilities.chrome();
+                break;
+            case "chrome":
+            default:
+                capabilities = DesiredCapabilities.chrome();
+                break;
+        }
+        return new RemoteWebDriver(new URL(gridUrl), capabilities);
+    }
+
     /**
      * Prepares {@link WebDriver} instance with timeout and browser window configurations.
      *
@@ -100,9 +106,9 @@ public abstract class BaseTest {
      */
     @BeforeClass
     @Parameters({"selenium.browser", "selenium.grid"})
-    public void setUp(@Optional("chrome") String browser, @Optional("") String gridUrl) {
+    public void setUp(@Optional("chrome") String browser, @Optional("") String gridUrl) throws MalformedURLException {
         // TODO create WebDriver instance according to passed parameters
-        driver = new EventFiringWebDriver(getDriver(browser));
+        driver = gridUrl.isEmpty() ? new EventFiringWebDriver(getDriver(browser)) : new EventFiringWebDriver(getRemoteDriver(gridUrl, browser));
         Reporter.setEscapeHtml(false);
         driver.register(new EventHandler());
 
@@ -135,7 +141,7 @@ public abstract class BaseTest {
      */
     @AfterClass
     public void tearDown() {
-        if (driver != null) {
+       if (driver != null) {
             driver.quit();
         }
     }
@@ -146,7 +152,6 @@ public abstract class BaseTest {
      */
     private boolean isMobileTesting(String browser) {
         switch (browser) {
-            case "mobile":
             case "android":
                 return true;
             case "firefox":

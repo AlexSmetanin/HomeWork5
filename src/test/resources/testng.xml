@@ -2,49 +2,36 @@
 
 <suite name="Products Management" verbose="1" >
 
-
-        <test name="Create New Order [Chrome]" >
-            <parameter name="selenium.browser" value="chrome" />
-            <classes>
-                <class name="lecture5.tests.PlaceOrderTest" />
-            </classes>
+            <test name="Create New Order [Chrome]" >
+                <parameter name="selenium.browser" value="chrome" />
+                <!--  <parameter name="selenium.grid" value="http://localhost:4444/wd/hub" /> -->
+                <classes>
+                    <class name="lecture5.tests.PlaceOrderTest" />
+                </classes>
         </test>
 
-    <!--
-        <test name="Create New Order [Firefox]" >
-            <parameter name="selenium.browser" value="firefox" />
-            <classes>
-                <class name="lecture5.tests.PlaceOrderTest" />
-            </classes>
-        </test>
+            <test name="Create New Order [Firefox]" >
+                <parameter name="selenium.browser" value="firefox" />
+                <!--  <parameter name="selenium.grid" value="http://localhost:4444/wd/hub" /> -->
+                <classes>
+                    <class name="lecture5.tests.PlaceOrderTest" />
+                </classes>
+            </test>
 
-        <test name="Create New Order [Internet Explorer]" >
-            <parameter name="selenium.browser" value="ie" />
-            <classes>
-                <class name="lecture5.tests.PlaceOrderTest" />
-            </classes>
-        </test>
+            <test name="Create New Order [Internet Explorer]" >
+                <parameter name="selenium.browser" value="ie" />
+                <!--  <parameter name="selenium.grid" value="http://localhost:4444/wd/hub" /> -->
+                <classes>
+                    <class name="lecture5.tests.PlaceOrderTest" />
+                </classes>
+            </test>
 
-        <test name="Create New Order [Remote-Chrome]" >
-            <parameter name="selenium.browser" value="remote chrome" />
-            <parameter name="selenium.grid" value="http://localhost:4444/wd/hub" />
-            <classes>
-                <class name="lecture5.tests.PlaceOrderTest" />
-            </classes>
-        </test>
+            <test name="Create New Order [Android]" >
+                <parameter name="selenium.browser" value="android" />
+                <!--  <parameter name="selenium.grid" value="http://localhost:4444/wd/hub" /> -->
+                <classes>
+                    <class name="lecture5.tests.PlaceOrderTest" />
+                </classes>
+            </test>
 
-        <test name="Create New Order [Headless-Chrome]" >
-            <parameter name="selenium.browser" value="headless-chrome" />
-            <classes>
-                <class name="lecture5.tests.PlaceOrderTest" />
-            </classes>
-        </test>
-
-        <test name="Create New Order [Mobile Chrome]" >
-            <parameter name="selenium.browser" value="mobile" />
-            <classes>
-                <class name="lecture5.tests.PlaceOrderTest" />
-            </classes>
-        </test>
-    -->
 </suite>

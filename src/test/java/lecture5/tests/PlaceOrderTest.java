@@ -10,7 +10,7 @@ public class PlaceOrderTest extends BaseTest {
     @DataProvider
     public Object[][] getCustomerData() {
         return new Object[][]{
-                {"Сметанин", "Александр", "AlexSmetanin72@gmail.com", "ул.Шевченко 123 кв.54", "18000", "Черкассы"},
+                {"Сметанин", "Александр", "AlexSmetanin72@gmail.com", "ул.Шевченко 123 кв.45", "18000", "Черкассы"},
         };
     }
 
